@@ -1,0 +1,19 @@
+{
+  "name": "ppppost",
+  "version": "0.1.0",
+  "description": "Post to Mastodon and Twitter from the command line",
+  "author": {
+    "name": "Ashur Cabrera",
+    "email": "hello@ashur.cab"
+  },
+  "main": "index.js",
+  "bin": {
+    "ppppost": "./bin/ppppost.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.19.0",
+    "jsonfile": "^5.0.0",
+    "mastodon": "^1.2.2"
+  }
+}
