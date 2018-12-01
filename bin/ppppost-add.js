@@ -96,10 +96,8 @@ bootstrap( configPath )
 		{
 			rl.close();
 
-			let bot = new Bot( botArgs );
-			console.log( bot );
-
-			// TODO: Implement saving new/updated bot to disk
+			app.addBot( new Bot( botArgs ) );
+			app.save( configPath );
 		});
 	})
 	.catch( error =>
