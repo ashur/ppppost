@@ -1,4 +1,5 @@
 const Bot = require( './bot' );
+const Config = require( './config' );
 const jsonfile = require( 'jsonfile' );
 const path = require( 'path' );
 
@@ -40,6 +41,12 @@ class App
 
 			return 1;
 		});
+	}
+
+	save( configPath )
+	{
+		let config = new Config( { version: "1.0", bots: this._bots } );
+		return config.write( configPath );
 	}
 }
 
