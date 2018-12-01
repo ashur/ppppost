@@ -64,7 +64,10 @@ bootstrap( configPath )
 					prompt( 'Mastodon Instance (ex., mastodon.social)' )
 						.then( instance =>
 						{
-							// TODO: Remove trailing '/' from instance
+							if( instance.slice( -1 ) == '/' )
+							{
+								instance = instance.slice( 0, -1 );
+							}
 
 							data.api_url = `https://${instance}/api/v1/`;
 
