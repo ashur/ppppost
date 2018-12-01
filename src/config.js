@@ -6,8 +6,12 @@ class Config
 {
 	constructor( { version="1.0", bots=[] } = {} )
 	{
-		this.bots = bots;
 		this.version = version;
+
+		if( version == "1.0" )
+		{
+			this.bots = bots;
+		}
 	}
 
 	static read( configPath )
@@ -34,13 +38,16 @@ class Config
 	{
 		return new Promise( (resolve, reject) =>
 		{
-			let data = {
-				version: this.version,
-				bots: this.bots
-			};
+			let data = {};
+
+			if( this.version == "1.0" )
+			{
+				data.version = this.version;
+				data.bots = this.bots;
+			}
 
 			let absolutePath = path.resolve( configPath.replace( '~', process.env.HOME ) );
-	
+
 			// Attempt to create the parent folder structure in case it doesn't
 			// already exist.
 
