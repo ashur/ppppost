@@ -6,7 +6,6 @@
     "name": "Ashur Cabrera",
     "email": "hello@ashur.cab"
   },
-  "main": "index.js",
   "bin": {
     "ppppost": "./bin/ppppost.js"
   },
