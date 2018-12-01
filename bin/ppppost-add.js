@@ -95,7 +95,55 @@ bootstrap( configPath )
 		})()
 		.then( () =>
 		{
-			// TODO: Add Twitter support
+			/**
+			 * Twitter
+			 */
+			return new Promise( resolve =>
+			{
+				if( createTwitter )
+				{
+					let twitter = {};
+
+					prompt( rl, 'Twitter Consumer Key', true )
+						.then( consumer_key =>
+						{
+							twitter.consumer_key = consumer_key;
+						})
+						.then( () =>
+						{
+							return prompt( rl, 'Twitter Consumer Secret', true );
+						})
+						.then( consumer_secret =>
+						{
+							twitter.consumer_secret = consumer_secret;
+						})
+						.then( () =>
+						{
+							return prompt( rl, 'Twitter Access Token', true );
+						})
+						.then( access_token =>
+						{
+							twitter.access_token = access_token;
+						})
+						.then( () =>
+						{
+							return prompt( rl, 'Twitter Access Token Secret', true );
+						})
+						.then( access_token_secret =>
+						{
+							twitter.access_token_secret = access_token_secret;
+						})
+						.then( () =>
+						{
+							botArgs.twitter = twitter;
+							resolve();
+						})
+				}
+				else
+				{
+					resolve();
+				}
+			});
 		})
 		.then( () =>
 		{
