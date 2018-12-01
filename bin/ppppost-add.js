@@ -5,34 +5,19 @@ const Bot = require( '../src/bot' );
 const Mastodon = require( '../src/mastodon' );
 const pkg = require( '../package.json' ); 
 const program = require( 'commander' );
+const prompt = require( '../src/helpers/prompt' );
 const readline = require('readline');
 
 program
 	.command( 'add <bot>', 'add a new bot' )
-	.option( '-M, --mastodon', 'post only to Mastodon' )
-	.option( '-T, --twitter', 'post only to Twitter' )
+	.option( '-M, --mastodon', 'add Mastodon credentials' )
+	.option( '-T, --twitter', 'add Twitter credentials' )
 	.parse( process.argv );
 
 const rl = readline.createInterface({
 	input: process.stdin,
 	output: process.stdout,
 });
-
-function prompt( message )
-{
-	return new Promise( resolve =>
-	{
-		rl.question( `${message}: `, answer =>
-		{
-			if( answer == '' )
-			{
-				resolve( prompt( message ) );
-			}
-
-			resolve( answer );
-		});
-	});
-}
 
 /**
  * Run the command
@@ -61,7 +46,7 @@ bootstrap( configPath )
 				{
 					let data = {};
 
-					prompt( 'Mastodon Instance (ex., mastodon.social)' )
+					prompt( rl, 'Mastodon Instance (ex., mastodon.social)', true )
 						.then( instance =>
 						{
 							if( instance.slice( -1 ) == '/' )
@@ -71,7 +56,7 @@ bootstrap( configPath )
 
 							data.api_url = `https://${instance}/api/v1/`;
 
-							return prompt( 'Mastodon Token' );
+							return prompt( rl, 'Mastodon Token', true );
 						})
 						.then( access_token =>
 						{
@@ -79,7 +64,7 @@ bootstrap( configPath )
 
 							botArgs.mastodon = new Mastodon( data );
 
-							return prompt( 'Mastodon Visibility' );
+							return prompt( rl, 'Mastodon Visibility', true );
 						})
 						.then( visibility =>
 						{
