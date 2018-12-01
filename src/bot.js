@@ -44,11 +44,11 @@ class Bot
 			this.mastodon.post( status )
 				.then( response =>
 				{
-					resolve( response.data.url );
+					resolve( response.data.id );
 				})
 				.catch( error =>
 				{
-					reject( `"${error.message}" (${error.statusCode})` );
+					reject( error );
 				});
 		})
 	}

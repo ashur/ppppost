@@ -67,39 +67,65 @@ bootstrap( configPath )
 		let postToMastodon = program.mastodon || ( postToAll && bot.hasMastodon() );
 		let postToTwitter  = program.twitter || ( postToAll && bot.hasTwitter() );
 
+		let allUpdates = [];
+		let exitCode = 0;
+		let result = {
+			date: Date.now()
+		};
+
 		if( postToMastodon )
 		{
-			bot.toot( status )
-				.then( url =>
+			result.mastodon = {};
+
+			let mastodonUpdate = bot.toot( status )
+				.then( id =>
 				{
-					if( !postToTwitter )
-					{
-						console.log( url );
-					}
-					else
-					{
-						console.log( '✓ Mastodon', url );
-					}
+					result.mastodon.status = 'ok';
+					result.mastodon.id = id;
 				})
 				.catch( error =>
 				{
-					console.log( `${pkg.name}: Mastodon:`, error );
-					process.exit( 1 );
+					exitCode = 1;
+
+					result.mastodon.status = 'error';
+					result.mastodon.error = {
+						code: error.statusCode,
+						message: error.message,
+					};
 				});
+
+			allUpdates.push( mastodonUpdate );
 		}
 		if( postToTwitter )
 		{
-			bot.tweet( status )
+			result.twitter = {};
+
+			let twitterUpdate = bot.tweet( status )
 				.then( url =>
 				{
-					// ...
+					result.twitter.status = 'ok';
+					result.twitter.id = id;
 				})
 				.catch( error =>
 				{
-					console.log( `${pkg.name}: Twitter:`, error );
-					process.exit( 1 );
+					exitCode = 1;
+
+					result.twitter.status = 'error';
+					result.twitter.error = {
+						code: error.statusCode,
+						message: error.message,
+					};
 				});
+
+			allUpdates.push( twitterUpdate );
 		}
+
+		Promise.all( allUpdates )
+			.then( () =>
+			{
+				console.log( JSON.stringify( result, null, 4 ) );
+				process.exit( exitCode );
+			})
 	})
 	.catch( error =>
 	{
