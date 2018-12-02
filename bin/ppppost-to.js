@@ -101,7 +101,7 @@ bootstrap( configPath )
 			result.twitter = {};
 
 			let twitterUpdate = bot.tweet( status )
-				.then( url =>
+				.then( id =>
 				{
 					result.twitter.status = 'ok';
 					result.twitter.id = id;

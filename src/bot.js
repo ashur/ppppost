@@ -77,7 +77,15 @@ class Bot
 				reject( `'${this.name}' has not been configured for Twitter` );
 			}
 
-			// TODO: Implement calling Twitter.post()
+			this.twitter.post( status )
+				.then( response =>
+				{
+					resolve( response.data.id );
+				})
+				.catch( error =>
+				{
+					reject( error );
+				});
 		});
 	}
 }
