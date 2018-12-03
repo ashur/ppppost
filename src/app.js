@@ -64,6 +64,16 @@ class App
 	}
 
 	/**
+	 * Remove a bot from the list of bots
+	 * @param {string} name
+	 */
+	removeBot( name )
+	{
+		let index = this._bots.findIndex( bot => bot.name == name );
+		this._bots.splice( index, 1 );
+	}
+
+	/**
 	 * Save the bot list to a JSON file
 	 * @param {string} configPath
 	 * @return {Promise}

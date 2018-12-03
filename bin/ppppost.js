@@ -7,5 +7,6 @@ program
 	.version( `${pkg.name} version ${pkg.version}` )
 	.command( 'add <bot>', 'add a new bot' )
 	.command( 'list', 'list all bots' ).alias( 'ls' )
+	.command( 'rm <bot>', 'remove a bot' )
 	.command( 'to <bot>', 'post a message' )
 	.parse( process.argv );
