@@ -12,7 +12,7 @@ function list( val )
 
 program
 	.command( 'to <bot>', 'post a message' )
-	.option( '-i, --images <paths>', 'list of images', list )
+	.option( '-i, --images <paths>', 'comma-separated list of paths', list )
 	.option( '-m, --message <message>', 'status text' )
 	.option( '-M, --mastodon', 'post only to Mastodon' )
 	.option( '-T, --twitter', 'post only to Twitter' )

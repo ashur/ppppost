@@ -9,8 +9,8 @@ const readline = require('readline');
 
 program
 	.command( 'add <bot>', 'add a new bot' )
-	.option( '-M, --mastodon', 'add Mastodon credentials' )
-	.option( '-T, --twitter', 'add Twitter credentials' )
+	.option( '-M, --mastodon', 'only add Mastodon credentials' )
+	.option( '-T, --twitter', 'only add Twitter credentials' )
 	.parse( process.argv );
 
 const rl = readline.createInterface({
