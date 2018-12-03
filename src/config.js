@@ -14,6 +14,11 @@ class Config
 		}
 	}
 
+	/**
+	 * Read a JSON config file and create a new Config instance
+	 * @param {string} configPath
+	 * @return {boolean}
+	 */
 	static read( configPath )
 	{
 		return new Promise( (resolve, reject) =>
@@ -30,10 +35,14 @@ class Config
 				{
 					reject( error.message );
 				});
-	
 		});
 	}
 
+	/**
+	 * Write the current instance's properties to a JSON config file
+	 * @param {string} configPath
+	 * @return {Promise}
+	 */
 	write( configPath )
 	{
 		return new Promise( (resolve, reject) =>

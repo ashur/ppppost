@@ -11,6 +11,7 @@ class App
 	}
 
 	/**
+	 * Add a bot to the list of bots
 	 * @param {Bot} bot
 	 */
 	addBot( bot )
@@ -25,11 +26,20 @@ class App
 		}
 	}
 
+	/**
+	 * Find a single bot
+	 * @param {string} name - Name of bot
+	 * @param {Bot}
+	 */
 	bot( name )
 	{
 		return this._bots.find( bot => bot.name == name );
 	}
 
+	/**
+	 * Return an array of Bot objects, sorted by name
+	 * @return {Bot[]} bots - An array of Bot objects
+	 */
 	get bots()
 	{
 		return this._bots.sort( (a, b) =>
@@ -53,6 +63,11 @@ class App
 		return this._bots.find( bot => bot.name == name ) != null;
 	}
 
+	/**
+	 * Save the bot list to a JSON file
+	 * @param {string} configPath
+	 * @return {Promise}
+	 */
 	save( configPath )
 	{
 		let config = new Config( { version: "1.0", bots: this._bots } );

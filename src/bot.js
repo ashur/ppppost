@@ -17,11 +17,19 @@ class Bot
 		}
 	}
 
+	/**
+	 * Return whether Mastodon credentials are defined
+	 * @return {boolean}
+	 */
 	hasMastodon()
 	{
 		return this.mastodon != null;
 	}
 
+	/**
+	 * Return whether Twitter credentials are defined
+	 * @return {boolean}
+	 */
 	hasTwitter()
 	{
 		return this.twitter != null;

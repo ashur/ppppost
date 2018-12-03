@@ -12,6 +12,10 @@ class Twitter
 	}
 
 	/**
+	 * Post a new status to Twitter
+	 * @param {Object} object
+	 * @param {string} [object.message] - A status message string
+	 * @param {string[]} [object.media] - An array of path strings
 	 * @return {Promise}
 	 */
 	post( { message='', media=[] } = {} )

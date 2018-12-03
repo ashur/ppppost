@@ -11,6 +11,10 @@ class Mastodon
 	}
 
 	/**
+	 * Post a new status to Mastodon
+	 * @param {Object} object
+	 * @param {string} [object.message] - A status message string
+	 * @param {string[]} [object.media] - An array of path strings
 	 * @return {Promise}
 	 */
 	post( { message='', media=[] } = {} )
