@@ -30,7 +30,7 @@ By default, bot definitions (including access tokens) are stored in a plaintext 
 
 ### Mastodon
 
-You'll need to provide the following details to configure a bot for Mastodon:
+You'll be prompted for the following details when configuring a bot for Mastodon:
 
 - Instance (ex., `mastodon.social`)
 - Access Token
@@ -40,7 +40,7 @@ You can generate a new Mastodon application at `https://<instance>/settings/appl
 
 ### Twitter
 
-To configure a bot for Twitter, you'll need to provide the following:
+When configuring a bot for Twitter, you'll be prompted for the following:
 
 - Consumer Token
 - Consumer Secret
