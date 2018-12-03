@@ -31,7 +31,7 @@ bootstrap( configPath )
 			name: botName
 		};
 
-		if( app.bot( botName ) != null )
+		if( app.hasBot( botName ) )
 		{
 			console.log( `${pkg.name}: Bot '${botName}' already exists. See '${pkg.name} list'.` );
 			process.exit( 1 );

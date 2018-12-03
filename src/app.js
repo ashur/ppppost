@@ -43,6 +43,16 @@ class App
 		});
 	}
 
+	/**
+	 * Return whether the list of bots contains a specific bot name
+	 * @param {string} name
+	 * @return {boolean}
+	 */
+	hasBot( name )
+	{
+		return this._bots.find( bot => bot.name == name ) != null;
+	}
+
 	save( configPath )
 	{
 		let config = new Config( { version: "1.0", bots: this._bots } );
