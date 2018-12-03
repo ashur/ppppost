@@ -150,7 +150,7 @@ bootstrap( configPath )
 			rl.close();
 
 			app.addBot( new Bot( botArgs ) );
-			app.save( configPath );
+			return app.save( configPath );
 		});
 	})
 	.catch( error =>
