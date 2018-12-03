@@ -42,6 +42,7 @@ class Bot
 	 * @param {Object} status - The status to be posted
 	 * @param {string} status.message - The status message [optional]
 	 * @param {array} status.media - Array of local paths to images [optional]
+	 * @param {string} status.visibility - Override default bot visibility
 	 * 
 	 * @return {Promise}
 	 */

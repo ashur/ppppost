@@ -15,9 +15,10 @@ class Mastodon
 	 * @param {Object} object
 	 * @param {string} [object.message] - A status message string
 	 * @param {string[]} [object.media] - An array of path strings
+	 * @param {string} [object.visibility] - Override default visibility
 	 * @return {Promise}
 	 */
-	post( { message='', media=[] } = {} )
+	post( { message='', media=[], visibility=this.visibility } = {} )
 	{
 		if( message == '' && media.length == 0 )
 		{
@@ -50,7 +51,7 @@ class Mastodon
 
 				let toot = {
 					status: message,
-					visibility: this.visibility,
+					visibility: visibility,
 				};
 
 				if( mediaIds.length > 0 )

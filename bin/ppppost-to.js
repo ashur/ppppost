@@ -16,11 +16,19 @@ program
 	.option( '-m, --message <message>', 'status text' )
 	.option( '-M, --mastodon', 'post only to Mastodon' )
 	.option( '-T, --twitter', 'post only to Twitter' )
+	.option( '-v, --visibility <value>', 'override default visibility' )
 	.parse( process.argv );
 
 if( !program.images && !program.message )
 {
 	console.log( `${pkg.name}:`, 'You must provide either a status message or images, or both.' );
+	process.exit( 1 );
+}
+
+let visibilities = ['direct','private','unlisted','public'];
+if( program.visibility && visibilities.indexOf( program.visibility ) == -1 )
+{
+	console.log( `${pkg.name}: Unknown visibility value '${program.visibility}'.` );
 	process.exit( 1 );
 }
 
@@ -75,6 +83,11 @@ bootstrap( configPath )
 
 		if( postToMastodon )
 		{
+			if( program.visibility )
+			{
+				status.visibility = program.visibility;
+			}
+
 			result.mastodon = {};
 
 			let mastodonUpdate = bot.toot( status )
