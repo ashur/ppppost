@@ -15,10 +15,11 @@ class Twitter
 	 * Post a new status to Twitter
 	 * @param {Object} object
 	 * @param {string} [object.message] - A status message string
+	 * @param {string[]} [object.captions] - An array of captions corresponding to media
 	 * @param {string[]} [object.media] - An array of path strings
 	 * @return {Promise}
 	 */
-	post( { message='', media=[] } = {} )
+	post( { message='', media=[], captions=[] } = {} )
 	{
 		if( message == '' && media.length == 0 )
 		{
@@ -34,14 +35,29 @@ class Twitter
 		});
 
 		let mediaIds = [];
-		let mediaUploads = media.map( path =>
+		let mediaUploads = media.map( (path, index) =>
 		{
-			return t.post( 'media/upload', {
+			let media = {
 				media_data: fs.readFileSync( path , { encoding: 'base64' } )
-			})
+			};
+
+			return t.post( 'media/upload', media )
 				.then( response =>
 				{
-					mediaIds.push( response.data.media_id_string );
+					let mediaId = response.data.media_id_string
+					mediaIds.push( mediaId );
+
+					if( captions[index] )
+					{
+						let metadata = {
+							media_id: mediaId,
+							alt_text: {
+								text: captions[index]
+							}
+						};
+
+						return t.post( 'media/metadata/create', metadata );
+					}
 				})
 		});
 

@@ -12,6 +12,7 @@ function list( val )
 
 program
 	.command( 'to <bot>', 'post a message' )
+	.option( '-c, --captions <captions>', 'comma-separated list of captions to accompany images', list )
 	.option( '-i, --images <paths>', 'comma-separated list of paths', list )
 	.option( '-m, --message <message>', 'status text' )
 	.option( '-M, --mastodon', 'post only to Mastodon' )
@@ -58,10 +59,16 @@ bootstrap( configPath )
 		{
 			let absolutePaths = program.images.map( imagePath =>
 			{
+				imagePath = imagePath.replace( '~', process.env.HOME );
 				return path.resolve( imagePath );
 			});
 
 			status.media = absolutePaths;
+
+			if( program.captions )
+			{
+				status.captions = program.captions;
+			}
 		}
 		if( program.message )
 		{
