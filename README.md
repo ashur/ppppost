@@ -66,6 +66,12 @@ The `--images` option accepts a comma-separated list of file paths:
 $ ppppost to @schneiderlens --images ~/schneiderlens/tmp/tail.png,~/schneiderlens/tmp/teeth.png,~/schneiderlens/tmp/hooves.png --mastodon
 ```
 
+To add captions to your images, the `--captions` option accepts a comma-separated list that corresponds to the `--images` list:
+
+```
+$ ppppost to @schneiderlen --images tail.png,teeth.png --captions "The bushy tail.","Big teeth."
+```
+
 By default, `ppppost` will post to all services defined for the bot. To post to just one service, use the `[-M|--mastodon]` or `[-T|--twitter]` options.
 
 
@@ -73,6 +79,5 @@ By default, `ppppost` will post to all services defined for the bot. To post to 
 
 A more fully baked version of this tool should include:
 
-- Support for defining image accessibility descriptions
 - An `update` command for modifying existing bots
 - Support for OAuth-based authentication (instead of prompting for tokens and secrets)
