@@ -55,7 +55,11 @@ bootstrap( configPath )
 				{
 					let mastodon = {};
 
-					prompt( rl, 'Mastodon Instance (ex., mastodon.social)', true )
+					prompt({
+						rl: rl,
+						message: 'Mastodon Instance (ex., mastodon.social)',
+						required: true
+					})
 						.then( instance =>
 						{
 							if( instance.slice( -1 ) == '/' )
@@ -67,7 +71,11 @@ bootstrap( configPath )
 						})
 						.then( () =>
 						{
-							return prompt( rl, 'Mastodon Access Token', true );
+							return prompt({
+								rl: rl,
+								message: 'Mastodon Access Token',
+								required: true
+							});
 						})
 						.then( access_token =>
 						{
@@ -75,7 +83,11 @@ bootstrap( configPath )
 						})
 						.then( () =>
 						{
-							return prompt( rl, 'Mastodon Visibility', true );
+							return prompt({
+								rl: rl,
+								message: 'Mastodon Visibility',
+								required: true
+							});
 						})
 						.then( visibility =>
 						{
@@ -104,14 +116,22 @@ bootstrap( configPath )
 				{
 					let twitter = {};
 
-					prompt( rl, 'Twitter Consumer Key', true )
+					prompt({
+						rl: rl,
+						message: 'Twitter Consumer Key',
+						required: true
+					})
 						.then( consumer_key =>
 						{
 							twitter.consumer_key = consumer_key;
 						})
 						.then( () =>
 						{
-							return prompt( rl, 'Twitter Consumer Secret', true );
+							return prompt({
+								rl: rl,
+								message: 'Twitter Consumer Secret',
+								required: true 
+							};
 						})
 						.then( consumer_secret =>
 						{
@@ -119,7 +139,11 @@ bootstrap( configPath )
 						})
 						.then( () =>
 						{
-							return prompt( rl, 'Twitter Access Token', true );
+							return prompt({
+								rl: rl,
+								message: 'Twitter Access Token',
+								required: true 
+							};
 						})
 						.then( access_token =>
 						{
@@ -127,7 +151,11 @@ bootstrap( configPath )
 						})
 						.then( () =>
 						{
-							return prompt( rl, 'Twitter Access Token Secret', true );
+							return prompt({
+								rl: rl,
+								message: 'Twitter Access Token Secret',
+								required: true 
+							};
 						})
 						.then( access_token_secret =>
 						{

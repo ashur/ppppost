@@ -9,4 +9,5 @@ program
 	.command( 'list', 'list all bots' ).alias( 'ls' )
 	.command( 'rm <bot>', 'remove a bot' )
 	.command( 'to <bot>', 'post a message' )
+	.command( 'update <bot>', 'update an existing bot' )
 	.parse( process.argv );
