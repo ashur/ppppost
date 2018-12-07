@@ -9,8 +9,6 @@ const readline = require('readline');
 
 program
 	.command( 'update <bot>', 'update an existing bot' )
-	.option( '-M, --mastodon', 'only update Mastodon credentials' )
-	.option( '-T, --twitter', 'only update Twitter credentials' )
 	.parse( process.argv );
 
 const rl = readline.createInterface({
@@ -46,52 +44,58 @@ bootstrap( configPath )
 
 		let bot = app.bot( botOriginalName );
 
-		/**
-		 * Which services to update
-		 */
-		let updateAll      = !program.mastodon && !program.twitter;
-		let updateMastodon = program.mastodon || updateAll;
-		let updateTwitter  = program.twitter || updateAll;
-
-		(function()
-		{
-			return new Promise( resolve =>
+		return prompt({
+				rl: rl,
+				message: `Bot Name`,
+				defaultAnswer: botOriginalName
+		})
+			.then( botName =>
 			{
-				prompt({
-						rl: rl,
-						message: `Bot Name`,
-						defaultAnswer: botOriginalName
-				})
-					.then( botName =>
-					{
-						bot.name = botName;
-						resolve();
-					})
-			});
-		})()
-		.then( () =>
-		{
+				bot.name = botName;
+			})
+
 			/**
 			 * Mastodon
 			 */
-			return new Promise( (resolve, reject) =>
+			.then( () =>
 			{
-				if( updateMastodon )
+				if( !bot.hasMastodon() )
 				{
-					let mastodon = {};
-
-					let instance;
+					return prompt({
+						rl: rl,
+						message: 'Do you want to configure Mastodon? (y/n)',
+						required: true,
+					})
+						.then( userConfigureMastodon =>
+						{
+							return Promise.resolve( ['y','yes'].indexOf( userConfigureMastodon.toLowerCase() ) > -1 );
+						});
+				}
+				else
+				{
+					return Promise.resolve( true );
+				}
+			})
+			.then( configureMastodon =>
+			{
+				if( configureMastodon )
+				{
+					let defaults = {};
+	
 					if( bot.hasMastodon() )
 					{
 						let matches = /https:\/\/([^\/]+)/.exec( bot.mastodon.api_url );
-						instance = matches[1] ? matches[1] : null;
+	
+						defaults.access_token = bot.mastodon.access_token;
+						defaults.instance = matches[1] ? matches[1] : null;
+						defaults.visibility = bot.mastodon.visibility;
 					}
-
-					prompt( {
+	
+					return prompt({
 						rl: rl,
-						message: bot.hasMastodon() ? `Mastodon Instance` : 'Mastodon Instance (ex., mastodon.social)',
-						required: !bot.hasMastodon() || (bot.hasMastodon() && !instance),
-						defaultAnswer: instance ? instance : null
+						message: defaults.instance ? 'Mastodon Instance' : 'Mastodon Instance (ex., mastodon.social)',
+						required: !defaults.instance,
+						defaultAnswer: defaults.instance
 					})
 						.then( instance =>
 						{
@@ -99,7 +103,7 @@ bootstrap( configPath )
 							{
 								instance = instance.slice( 0, -1 );
 							}
-
+	
 							bot.mastodon.api_url = `https://${instance}/api/v1/`;
 						})
 						.then( () =>
@@ -107,116 +111,43 @@ bootstrap( configPath )
 							return prompt({
 								rl: rl,
 								message: 'Mastodon Access Token',
-								required: !bot.mastodon.access_token,
-								defaultAnswer: truncate( bot.mastodon.access_token, 11 )
-							});
+								required: !defaults.access_token,
+								defaultAnswer: truncate( defaults.access_token, 11 )
+							})
 						})
-						.then( access_token =>
+						.then( accessToken =>
 						{
-							bot.mastodon.access_token = access_token;
+							bot.mastodon.access_token = accessToken;
 						})
 						.then( () =>
 						{
 							return prompt({
 								rl: rl,
 								message: 'Mastodon Visibility',
-								required: !bot.mastodon.visibility,
-								defaultAnswer: bot.mastodon.visibility
-							});
+								required: !defaults.visibility,
+								defaultAnswer: defaults.visibility
+							})
 						})
 						.then( visibility =>
 						{
 							bot.mastodon.visibility = visibility;
 						})
-						.then( () =>
-						{
-							resolve();
-						});
 				}
 				else
 				{
-					resolve();
+					return Promise.resolve();
 				}
-			});
-		})
-		.then( () =>
-		{
-			/**
-			 * Twitter
-			 */
-			return new Promise( resolve =>
+			})
+			.then( () =>
 			{
-				if( updateTwitter )
-				{
-					let twitter = {};
-
-					prompt({
-						rl: rl,
-						message: 'Twitter Consumer Key',
-						required: true
-					})
-						.then( consumer_key =>
-						{
-							twitter.consumer_key = consumer_key;
-						})
-						.then( () =>
-						{
-							return prompt({
-								rl: rl,
-								message: 'Twitter Consumer Secret',
-								required: true 
-							});
-						})
-						.then( consumer_secret =>
-						{
-							twitter.consumer_secret = consumer_secret;
-						})
-						.then( () =>
-						{
-							return prompt({
-								rl: rl,
-								message: 'Twitter Access Token',
-								required: true 
-							});
-						})
-						.then( access_token =>
-						{
-							twitter.access_token = access_token;
-						})
-						.then( () =>
-						{
-							return prompt({
-								rl: rl,
-								message: 'Twitter Access Token Secret',
-								required: true 
-							});
-						})
-						.then( access_token_secret =>
-						{
-							twitter.access_token_secret = access_token_secret;
-						})
-						.then( () =>
-						{
-							botArgs.twitter = twitter;
-							resolve();
-						})
-				}
-				else
-				{
-					resolve();
-				}
+				console.log( bot );
+				// app.updateBot( botOriginalName, bot );
+				// return app.save( configPath );
+			})
+			.finally( () =>
+			{
+				rl.close();
 			});
-		})
-		.then( () =>
-		{
-			rl.close();
-
-			console.log( bot );
-			app.updateBot( botOriginalName, bot );
-
-			return Promise.resolve();
-			return app.save( configPath );
-		});
 	})
 	.catch( error =>
 	{
