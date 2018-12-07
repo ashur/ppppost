@@ -7,7 +7,7 @@ const program = require( 'commander' );
 function log( bot, visibilityPad )
 {
 	let pattern = '%s%s  %s  %s';
-	console.log( pattern, bot.hasMastodon() ? 'm' : '-', bot.hasTwitter() ? 't' : '-', bot.hasMastodon() ? bot.mastodon.visibility.padEnd( visibilityPad, ' ' ) : '-', bot.name );
+	console.log( pattern, bot.hasMastodon() ? 'm' : '-', bot.hasTwitter() ? 't' : '-', bot.hasMastodon() ? bot.mastodon.visibility.padEnd( visibilityPad, ' ' ) : '-'.padEnd( visibilityPad, ' ' ), bot.name );
 }
 
 program
