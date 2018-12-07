@@ -1,6 +1,6 @@
 # 👻 ppppost
 
-Post to Mastodon and Twitter from the command line.
+Post to Mastodon and Twitter simultaneously from the command line.
 
 ## Installation
 
