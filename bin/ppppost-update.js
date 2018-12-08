@@ -2,6 +2,8 @@
 
 const {bootstrap, Config} = require( '../src/helpers/app-from-config-path' );
 const Bot = require( '../src/bot' );
+const Mastodon = require( '../src/mastodon' );
+const Twitter = require( '../src/twitter' );
 const pkg = require( '../package.json' ); 
 const program = require( 'commander' );
 const prompt = require( '../src/helpers/prompt' );
@@ -15,16 +17,6 @@ const rl = readline.createInterface({
 	input: process.stdin,
 	output: process.stdout,
 });
-
-function truncate( string, length )
-{
-	if( string.length <= length )
-	{
-		return string;
-	}
-
-	return `${string.substr(0, length - 3)}...`;
-}
 
 /**
  * Run the command
@@ -81,7 +73,7 @@ bootstrap( configPath )
 				if( configureMastodon )
 				{
 					let defaults = {};
-	
+
 					if( bot.hasMastodon() )
 					{
 						let matches = /https:\/\/([^\/]+)/.exec( bot.mastodon.api_url );
@@ -90,7 +82,14 @@ bootstrap( configPath )
 						defaults.instance = matches[1] ? matches[1] : null;
 						defaults.visibility = bot.mastodon.visibility;
 					}
-	
+					else
+					{
+						bot.mastodon = new Mastodon({
+							api_url: '',
+							access_token: '',
+						});
+					}
+
 					return prompt({
 						rl: rl,
 						message: defaults.instance ? 'Mastodon Instance' : 'Mastodon Instance (ex., mastodon.social)',
@@ -112,7 +111,8 @@ bootstrap( configPath )
 								rl: rl,
 								message: 'Mastodon Access Token',
 								required: !defaults.access_token,
-								defaultAnswer: truncate( defaults.access_token, 11 )
+								defaultAnswer: defaults.access_token,
+								defaultAnswerMaxLength: 11,
 							})
 						})
 						.then( accessToken =>
@@ -133,11 +133,109 @@ bootstrap( configPath )
 							bot.mastodon.visibility = visibility;
 						})
 				}
+			})
+
+			/**
+			 * Twitter
+			 */
+			.then( () =>
+			{
+				if( !bot.hasTwitter() )
+				{
+					return prompt({
+						rl: rl,
+						message: 'Do you want to configure Twitter? (y/n)',
+						required: true,
+					})
+						.then( userConfigureTwitter =>
+						{
+							return Promise.resolve( ['y','yes'].indexOf( userConfigureTwitter.toLowerCase() ) > -1 );
+						});
+				}
 				else
 				{
-					return Promise.resolve();
+					return Promise.resolve( true );
 				}
 			})
+			.then( configureTwitter =>
+			{
+				if( configureTwitter )
+				{
+					let defaults = {};
+
+					if( bot.hasTwitter() )
+					{
+						defaults.consumer_key = bot.twitter.consumer_key;
+						defaults.consumer_secret = bot.twitter.consumer_secret;
+						defaults.access_token = bot.twitter.access_token;
+						defaults.access_token_secret = bot.twitter.access_token_secret;
+					}
+					else
+					{
+						bot.twitter = new Twitter({
+							consumer_key: '',
+							consumer_secret: '',
+							access_token: '',
+							access_token_secret: '',
+						});
+					}
+
+					return prompt({
+						rl: rl,
+						message: 'Twitter Consumer Key',
+						required: !defaults.consumer_key,
+						defaultAnswer: defaults.consumer_key,
+						defaultAnswerMaxLength: 11,
+					})
+						.then( consumerKey =>
+						{
+							bot.twitter.consumer_key = consumerKey;
+						})
+						.then( () =>
+						{
+							return prompt({
+								rl: rl,
+								message: 'Twitter Consumer Secret',
+								required: !defaults.consumer_secret,
+								defaultAnswer: defaults.consumer_secret,
+								defaultAnswerMaxLength: 11,
+							})
+						})
+						.then( consumerSecret =>
+						{
+							bot.twitter.consumer_secret = consumerSecret;
+						})
+						.then( () =>
+						{
+							return prompt({
+								rl: rl,
+								message: 'Twitter Access Token',
+								required: !defaults.access_token,
+								defaultAnswer: defaults.access_token,
+								defaultAnswerMaxLength: 11,
+							})
+						})
+						.then( accessToken =>
+						{
+							bot.twitter.access_token = accessToken;
+						})
+						.then( () =>
+						{
+							return prompt({
+								rl: rl,
+								message: 'Twitter Access Token Secret',
+								required: !defaults.access_token_secret,
+								defaultAnswer: defaults.access_token_secret,
+								defaultAnswerMaxLength: 11,
+							})
+						})
+						.then( accessTokenSecret =>
+						{
+							bot.twitter.access_token_secret = accessTokenSecret;
+						})
+				}
+			})
+
 			.then( () =>
 			{
 				console.log( bot );
