@@ -131,7 +131,7 @@ bootstrap( configPath )
 								rl: rl,
 								message: 'Twitter Consumer Secret',
 								required: true 
-							};
+							});
 						})
 						.then( consumer_secret =>
 						{
@@ -143,7 +143,7 @@ bootstrap( configPath )
 								rl: rl,
 								message: 'Twitter Access Token',
 								required: true 
-							};
+							});
 						})
 						.then( access_token =>
 						{
@@ -155,7 +155,7 @@ bootstrap( configPath )
 								rl: rl,
 								message: 'Twitter Access Token Secret',
 								required: true 
-							};
+							});
 						})
 						.then( access_token_secret =>
 						{
