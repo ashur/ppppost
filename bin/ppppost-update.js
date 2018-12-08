@@ -238,9 +238,8 @@ bootstrap( configPath )
 
 			.then( () =>
 			{
-				console.log( bot );
-				// app.updateBot( botOriginalName, bot );
-				// return app.save( configPath );
+				app.updateBot( botOriginalName, bot );
+				return app.save( configPath );
 			})
 			.finally( () =>
 			{

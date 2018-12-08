@@ -83,6 +83,17 @@ class App
 		let config = new Config( { version: "1.0", bots: this._bots } );
 		return config.write( configPath );
 	}
+
+	/**
+	 * Replaces an existing bot with a new instance
+	 * @param {string} name
+	 * @param {Bot} bot
+	 */
+	updateBot( name, bot )
+	{
+		let index = this._bots.findIndex( bot => bot.name == name );
+		this._bots.splice( index, 1, bot );
+	}
 }
 
 module.exports = App;
