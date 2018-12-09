@@ -79,5 +79,4 @@ By default, `ppppost` will post to all services defined for the bot. To post to 
 
 A more fully baked version of this tool should include:
 
-- An `update` command for modifying existing bots
 - Support for OAuth-based authentication (instead of prompting for tokens and secrets)
