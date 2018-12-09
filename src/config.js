@@ -1,6 +1,6 @@
 const jsonfile = require( 'jsonfile' );
 const path = require( 'path' );
-const fs = require( 'fs' );
+const mkdirp = require( 'mkdirp' );
 
 class Config
 {
@@ -60,7 +60,7 @@ class Config
 			// Attempt to create the parent folder structure in case it doesn't
 			// already exist.
 
-			fs.mkdir( path.dirname( absolutePath ), { recursive: true }, error =>
+			mkdirp( path.dirname( absolutePath ), { recursive: true }, error =>
 			{
 				if( !error )
 				{
