@@ -10,7 +10,7 @@ $ npm install -g ashur/ppppost
 
 ### Requirements
 
-- [Node and NPM](https://nodejs.org/en/download/)
+- [Node 10.0](https://nodejs.org/en/download/) (or newer) & NPM
 
 ## Adding a Bot
 

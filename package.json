@@ -9,6 +9,9 @@
   "bin": {
     "ppppost": "./bin/ppppost.js"
   },
+  "engines": {
+    "node": "^10.x"
+  },
   "license": "ISC",
   "dependencies": {
     "commander": "^2.19.0",
