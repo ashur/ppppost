@@ -9,8 +9,6 @@ const readline = require('readline');
 
 program
 	.command( 'add <bot>', 'add a new bot' )
-	.option( '-M, --mastodon', 'only add Mastodon credentials' )
-	.option( '-T, --twitter', 'only add Twitter credentials' )
 	.parse( process.argv );
 
 const rl = readline.createInterface({
@@ -38,24 +36,24 @@ bootstrap( configPath )
 		}
 
 		/**
-		 * Which services to define
+		 * Mastodon
 		 */
-		let createAll      = !program.mastodon && !program.twitter;
-		let createMastodon = program.mastodon || createAll;
-		let createTwitter  = program.twitter || createAll;
-
-		(function()
-		{
-			/**
-			 * Mastodon
-			 */
-			return new Promise( resolve =>
+		return prompt({
+			rl: rl,
+			message: 'Do you want to configure Mastodon? (y/n)',
+			required: true,
+		})
+			.then( userCreateMastodon =>
+			{
+				return Promise.resolve( ['y','yes'].indexOf( userCreateMastodon.toLowerCase() ) > -1 );
+			})
+			.then( createMastodon =>
 			{
 				if( createMastodon )
 				{
 					let mastodon = {};
 
-					prompt({
+					return prompt({
 						rl: rl,
 						message: 'Mastodon Instance (ex., mastodon.social)',
 						required: true
@@ -96,90 +94,97 @@ bootstrap( configPath )
 						.then( () =>
 						{
 							botArgs.mastodon = mastodon;
-							resolve();
 						});
 				}
-				else
-				{
-					resolve();
-				}
-			});
-		})()
-		.then( () =>
-		{
+			})
+
 			/**
 			 * Twitter
 			 */
-			return new Promise( resolve =>
+			.then( () =>
 			{
-				if( createTwitter )
-				{
-					let twitter = {};
-
-					prompt({
-						rl: rl,
-						message: 'Twitter Consumer Key',
-						required: true
+				return prompt({
+					rl: rl,
+					message: 'Do you want to configure Twitter? (y/n)',
+					required: true,
+				})
+					.then( userCreateTwitter =>
+					{
+						return Promise.resolve( ['y','yes'].indexOf( userCreateTwitter.toLowerCase() ) > -1 );
 					})
-						.then( consumer_key =>
+					.then( createTwitter =>
+					{
+						if( createTwitter )
 						{
-							twitter.consumer_key = consumer_key;
-						})
-						.then( () =>
-						{
-							return prompt({
-								rl: rl,
-								message: 'Twitter Consumer Secret',
-								required: true 
-							});
-						})
-						.then( consumer_secret =>
-						{
-							twitter.consumer_secret = consumer_secret;
-						})
-						.then( () =>
-						{
-							return prompt({
-								rl: rl,
-								message: 'Twitter Access Token',
-								required: true 
-							});
-						})
-						.then( access_token =>
-						{
-							twitter.access_token = access_token;
-						})
-						.then( () =>
-						{
-							return prompt({
-								rl: rl,
-								message: 'Twitter Access Token Secret',
-								required: true 
-							});
-						})
-						.then( access_token_secret =>
-						{
-							twitter.access_token_secret = access_token_secret;
-						})
-						.then( () =>
-						{
-							botArgs.twitter = twitter;
-							resolve();
-						})
-				}
-				else
-				{
-					resolve();
-				}
-			});
-		})
-		.then( () =>
-		{
-			rl.close();
+							let twitter = {};
 
-			app.addBot( new Bot( botArgs ) );
-			return app.save( configPath );
-		});
+							return prompt({
+								rl: rl,
+								message: 'Twitter Consumer Key',
+								required: true
+							})
+								.then( consumer_key =>
+								{
+									twitter.consumer_key = consumer_key;
+								})
+								.then( () =>
+								{
+									return prompt({
+										rl: rl,
+										message: 'Twitter Consumer Secret',
+										required: true 
+									});
+								})
+								.then( consumer_secret =>
+								{
+									twitter.consumer_secret = consumer_secret;
+								})
+								.then( () =>
+								{
+									return prompt({
+										rl: rl,
+										message: 'Twitter Access Token',
+										required: true 
+									});
+								})
+								.then( access_token =>
+								{
+									twitter.access_token = access_token;
+								})
+								.then( () =>
+								{
+									return prompt({
+										rl: rl,
+										message: 'Twitter Access Token Secret',
+										required: true 
+									});
+								})
+								.then( access_token_secret =>
+								{
+									twitter.access_token_secret = access_token_secret;
+								})
+								.then( () =>
+								{
+									botArgs.twitter = twitter;
+								})
+						}
+					})
+			})
+
+			.then( () =>
+			{
+				if( !botArgs.mastodon && !botArgs.twitter )
+				{
+					return Promise.reject( 'Bot creation canceled.' );
+				}
+
+				app.addBot( new Bot( botArgs ) );
+				return app.save( configPath );
+			})
+			.finally( () =>
+			{
+				rl.close();
+			});
 	})
 	.catch( error =>
 	{

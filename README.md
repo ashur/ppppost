@@ -18,12 +18,6 @@ $ npm install -g ashur/ppppost
 $ ppppost add @tinyskylines
 ```
 
-By default, `ppppost` will prompt for both Mastodon and Twitter credentials. If you want to configure your bot for just one service, use the `[-M|--mastodon]` or `[-T|--twitter]` options:
-
-```
-$ ppppost add @masto_donbluth --mastodon
-```
-
 By default, bot definitions (including access tokens) are stored in a plaintext JSON file located at `~/.config/ppppost/config.json`.
 
 > 💡 You can override this location by setting the environment variable `PPPPOST_CONFIG`
