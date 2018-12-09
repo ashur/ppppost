@@ -14,6 +14,7 @@
     "commander": "^2.19.0",
     "jsonfile": "^5.0.0",
     "mastodon": "^1.2.2",
+    "mkdirp": "^0.5.1",
     "twit": "^2.2.11"
   }
 }
