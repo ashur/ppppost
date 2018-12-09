@@ -63,7 +63,7 @@ $ ppppost to @schneiderlens --images ~/schneiderlens/tmp/tail.png,~/schneiderlen
 To add captions to your images, the `--captions` option accepts a comma-separated list that corresponds to the `--images` list:
 
 ```
-$ ppppost to @schneiderlen --images tail.png,teeth.png --captions "The bushy tail.","Big teeth."
+$ ppppost to @schneiderlens --images tail.png,teeth.png --captions "The bushy tail.","Big teeth."
 ```
 
 By default, `ppppost` will post to all services defined for the bot. To post to just one service, use the `[-M|--mastodon]` or `[-T|--twitter]` options.
