@@ -18,6 +18,18 @@ $ npm install -g ashur/ppppost
 $ ppppost add @tinyskylines
 ```
 
+To specify only Mastodon credentials:
+
+```
+$ ppppost add -M @tinyskylines
+```
+
+To specify only Twitter credentials:
+
+```
+$ ppppost add -T @tinyskylines
+```
+
 By default, bot definitions (including access tokens) are stored in a plaintext JSON file located at `~/.config/ppppost/config.json`.
 
 > 💡 You can override this location by setting the environment variable `PPPPOST_CONFIG`
