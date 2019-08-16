@@ -57,7 +57,7 @@ $ ppppost to @namogenbo --message "Happy “National Canteen Raising Month”! #
 The `--images` option accepts a comma-separated list of file paths:
 
 ```
-$ ppppost to @schneiderlens --images ~/schneiderlens/tmp/tail.png,~/schneiderlens/tmp/teeth.png,~/schneiderlens/tmp/hooves.png --mastodon
+$ ppppost to @schneiderlens --images tail.png,teeth.png,hooves.png
 ```
 
 To add captions to your images, the `--captions` option accepts a comma-separated list that corresponds to the `--images` list:
@@ -69,7 +69,7 @@ $ ppppost to @schneiderlens --images tail.png,teeth.png --captions "The bushy ta
 To preserve commas in a caption, escape them with `\`:
 
 ```
-$ ppppost to @schneiderlens --images tail.png --captions "The bushy\, bushy tail."
+$ ppppost to @schneiderlens --images tail.png,teeth.png --captions "The bushy\, bushy tail.","Big teeth."
 ```
 
 By default, `ppppost` will post to all services defined for the bot. To post to just one service, use the `[-M|--mastodon]` or `[-T|--twitter]` options.
