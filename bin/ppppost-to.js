@@ -7,7 +7,13 @@ const program = require( 'commander' );
 
 function list( val )
 {
-	return val.split(',');
+	const PLACEHOLDER = '%PPPPOST_ESCAPED_COMMA%';
+	let list = val
+		.replace( /\\,/g, PLACEHOLDER )
+		.split( ',' )
+		.map( item => item.replace( new RegExp( PLACEHOLDER, 'g' ), ',' ) )
+
+	return list;
 }
 
 program

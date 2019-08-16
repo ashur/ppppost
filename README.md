@@ -78,6 +78,12 @@ To add captions to your images, the `--captions` option accepts a comma-separate
 $ ppppost to @schneiderlens --images tail.png,teeth.png --captions "The bushy tail.","Big teeth."
 ```
 
+To preserve commas in a caption, escape them with `\`:
+
+```
+$ ppppost to @schneiderlens --images tail.png --captions "The bushy\, bushy tail."
+```
+
 By default, `ppppost` will post to all services defined for the bot. To post to just one service, use the `[-M|--mastodon]` or `[-T|--twitter]` options.
 
 
